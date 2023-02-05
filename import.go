@@ -9,6 +9,7 @@ package python3
 
 /*
 #include "Python.h"
+typedef PyObject* (*initfunc)(void);
 */
 import "C"
 
@@ -145,4 +146,12 @@ func PyImport_ImportFrozenModule(name string) int {
 
 	return int(C.PyImport_ImportFrozenModule(cname))
 
+}
+
+//PyImport_AppendInittab : https://docs.python.org/3/c-api/import.html#c.PyImport_AppendInittab
+func PyImport_AppendInittab(name string, initfunc unsafe.Pointer) int {
+	cname := C.CString(name)
+	defer C.free(unsafe.Pointer(cname))
+
+	return int(C.PyImport_AppendInittab(cname, C.initfunc(initfunc)))
 }

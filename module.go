@@ -14,6 +14,10 @@ package python3
 import "C"
 import "unsafe"
 
+type PyModuleDef C.PyModuleDef
+
+type PyMethodDef C.PyMethodDef
+
 //Module : https://docs.python.org/3/c-api/module.html#c.PyModule_Type
 var Module = togo((*C.PyObject)(unsafe.Pointer(&C.PyModule_Type)))
 
@@ -64,4 +68,17 @@ func PyModule_GetState(module *PyObject) unsafe.Pointer {
 //PyModule_GetFilenameObject : https://docs.python.org/3/c-api/module.html#c.PyModule_GetFilenameObject
 func PyModule_GetFilenameObject(module *PyObject) *PyObject {
 	return togo(C.PyModule_GetFilenameObject(toc(module)))
+}
+
+// PyModule_Create : https://docs.python.org/3/c-api/module.html#c.PyModule_Create
+func PyModule_Create(module *PyModuleDef) *PyObject {
+	return togo(C.PyModule_Create2(toc_module(module), 1013))
+}
+
+func togo_module(cobject *C.PyModuleDef) *PyModuleDef {
+	return (*PyModuleDef)(cobject)
+}
+
+func toc_module(object *PyModuleDef) *C.PyModuleDef {
+	return (*C.PyModuleDef)(object)
 }

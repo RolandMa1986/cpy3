@@ -8,7 +8,9 @@ Copyright 2018 Datadog, Inc.
 package python3
 
 /*
-#cgo pkg-config: python3
+#cgo windows CFLAGS: -I C:/Python310/include
+#cgo windows LDFLAGS: -lpython310  -L C:/Python310/libs
+#cgo linux pkg-config: python3
 #include "Python.h"
 */
 import "C"
